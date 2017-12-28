@@ -22,6 +22,19 @@ export default new Router({
     {
       path: '/books',
       component: BookList,
+      children : [{
+        path : 'commonBooks',
+        component : resolve => require(['../components/CommonBooks.vue'],resolve),
+      },
+      {
+        path : '/',
+        component : resolve => require(['../components/CommonBooks.vue'],resolve),
+      },
+      {
+        path : 'lockBooks',
+        component : resolve => require(['../components/LockBooks.vue'],resolve),
+      },
+      ]
     },
     {
       path: '/user',

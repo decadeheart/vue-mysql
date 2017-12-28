@@ -13,6 +13,10 @@ var sqlMap = {
       select_all: 'SELECT * from book',
       updateBook:'update book set bookId=?,author=?,publisher=?,price=?,keyword=?,supplier=?,inventory=?  where bookName = ?',
       deleteBook: 'delete from book where bookName = ?',
+  },
+  lockbooks:{
+    addLock:'INSERT INTO lockbooks(bookId,bookName,publisher,supplier,inventory,date) values (?,?,?,?,?,NOW())',
+    select_books:'select * from lockbooks',
   }
 }
 
