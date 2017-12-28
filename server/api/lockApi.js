@@ -57,4 +57,26 @@ router.get('/lockBookList', (req, res) => {
   })
 });
 
+router.post('/updateInventory',(req,res)=>{
+  var book_sql=$sql.book.update_inventory;
+  var lock_sql=$sql.lockbooks.delete_lock;
+  var params = req.body;
+  conn.query(book_sql,[params.inventory,params.bookName],function(err,result){
+    if(err){
+      console.log(err)
+    }
+    if(result){
+      console.log('更新成功')
+      conn.query(lock_sql,params.bookName,function(err,result){
+        if(err){
+          console.log(err);
+        }
+        if(result){
+          console.log('delete success');
+          jsonWrite(res, result);
+        }
+      })
+    }
+  })
+})
 module.exports = router;

@@ -100,4 +100,46 @@ router.post('/updateUser', (req, res) => {
       }
   })
 });
+
+//管理员修改用户信息接口
+router.post('/AdminUpdate', (req, res) => {
+  var sql = $sql.user.Admin_Update;
+  var params = req.body;
+  console.log(params);
+  conn.query(sql, [params.name,params.address,params.extral,params.level,params.userId], function(err, result) {
+      if (err) {
+          console.log(err);
+      }
+      if (result) {
+          console.log('更新成功')
+          jsonWrite(res, result);
+      }
+  })
+});
+//查询所有用户列表
+router.get('/userList', (req, res) => {
+  var sql = $sql.user.select_users;
+  conn.query(sql, function(err, result) {
+      if (err) {
+          console.log(err);
+      }
+      if (result) {
+          jsonWrite(res, result);
+      }
+  })
+});
+
+router.post('/deleteuser', (req, res) => {
+  var sql = $sql.user.deleteUser;
+  var params = req.body;
+  console.log(params);
+  conn.query(sql, params.userId, function(err, result) {
+      if (err) {
+          console.log(err);
+      }
+      if (result) {
+          jsonWrite(res, result);
+      }
+  })
+});
 module.exports = router;

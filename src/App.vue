@@ -18,7 +18,7 @@
             <li><router-link to="/home">首页</router-link></li>
             <li><router-link to="/vedios">视频</router-link></li>
             <li><router-link to="/books">书籍</router-link></li>
-            <li><router-link to="/bookAdmin">录入书籍</router-link></li>
+            <li><router-link to="/control">控制台</router-link></li>
           </ul>
           <form class="navbar-form navbar-left">
             <div class="form-group">

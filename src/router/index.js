@@ -4,6 +4,8 @@ import Home from '@/components/Home'
 import BookAdmin from '@/components/BookAdmin'
 import BookList from '@/components/BookList'
 import User from '@/components/User'
+import Control from '@/components/Control'
+import UserList from '@/components/UserList'
 
 Vue.use(Router)
 
@@ -40,5 +42,22 @@ export default new Router({
       path: '/user',
       component: User,
     },
+    {
+      path: '/control',
+      component: Control,
+      children : [{
+        path : 'bookAdmin',
+        component : resolve => require(['../components/BookAdmin.vue'],resolve),
+      },
+      {
+        path : '/',
+        component : resolve => require(['../components/BookAdmin.vue'],resolve),
+      },
+      ]
+    },
+    {
+      path:'/userlist',
+      component: UserList
+    }
   ]
 })

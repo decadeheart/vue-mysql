@@ -81,7 +81,7 @@
           <div class="modal-body">
             <div class="form-group">
               <label for="exampleInputPassword1">进货数量</label>
-              <input type="text" class="form-control"  placeholder="inventory" v-model="selectedBook.inventory">
+              <input type="text" class="form-control"  placeholder="inventory" v-model="addBook">
             </div>
           </div>
           <div class="modal-footer">
@@ -101,6 +101,7 @@
         return {
           books:[],
           selectedBook:[],
+          addBook:0,
         }
       },
       created(){
@@ -121,34 +122,18 @@
       methods:{
         chooseBook(book){
           this.selectedBook = book
+          //this.removeByValue(this.books,this.selectedBook)
         },
         updateBook(){
+          this.selectedBook.inventory=parseInt(this.selectedBook.inventory)+parseInt(this.addBook)
           $('#updateModal').modal('hide')
-          this.$http.post('/api/book/updateBook',{
-          bookId: this.selectedBook.bookId,
-          author: this.selectedBook.author,
-          keyword: this.selectedBook.keyword,
-          price: this.selectedBook.price,
+          this.$http.post('/api/lockbooks/updateInventory',{
           inventory: this.selectedBook.inventory,
-          publisher: this.selectedBook.publisher,
-          supplier: this.selectedBook.supplier,
           bookName: this.selectedBook.bookName
           },{})
           .then(function(ret) {
             console.log(ret.data)
-          })
-          .then(function(err) {
-            console.log(err);
-          })
-        },
-        deleteBook(book){
-          console.log(book.bookName)
-          this.removeByValue(this.books,book)
-          this.$http.post('/api/book/deleteBook',{
-          bookName: book.bookName
-          },{})
-          .then(function(ret) {
-            console.log(ret.data)
+            this.removeByValue(this.books,this.selectedBook)
           })
           .then(function(err) {
             console.log(err);
