@@ -3,9 +3,8 @@
     <div class="col-sm-12">
       <div>
         <i class="glyphicon glyphicon-list-alt"></i>
-        书籍列表
+        采购单
         </div>
-        <button class="btn btn-primary" @click="addLock()">生成缺书列表</button>
       <hr>
       <div>
         <p v-if="!books.length"><strong>还没有任何书籍</strong></p>
@@ -15,12 +14,10 @@
             <tr>
               <th>书号</th>
               <th>书名</th>
-              <th>作者</th>
               <th>出版社</th>
-              <th>价格</th>
-              <th>关键词</th>
               <th>供应商</th>
               <th>存货</th>
+              <th>日期</th>
               <th>操作</th>
             </tr>
           </thead>
@@ -28,12 +25,10 @@
             <tr v-for="(book,index) in books">
               <td>{{book.bookId}}</td>
               <td>{{book.bookName}}</td>
-              <td>{{book.author}}</td>
               <td>{{book.publisher}}</td>
-              <td>{{book.price}}</td>
-              <td>{{book.keyword}}</td>
               <td>{{book.supplier}}</td>
               <td>{{book.inventory}}</td>
+              <td>{{book.date}}</td>
               <td><button class="btn btn-warning" data-toggle="modal" data-target="#updateModal" @click="chooseBook(book)">更新</button><button class="btn btn-danger" @click="deleteBook(book)">删除</button></td>
             </tr>
           </tbody>
@@ -104,10 +99,15 @@
         }
       },
       created(){
-        this.$http.get('/api/book/bookList')
+        this.$http.get('/api/lockbooks/lockBookList')
           .then(function(ret) {
             this.books = ret.data;
             console.log(ret.data)
+            for(var k=0;k<this.books.length;k++){
+              let newDate = new Date(this.books[k].date)
+              newDate = newDate.getFullYear() + '-' + (newDate.getMonth() + 1) + '-' + newDate.getDate() + ' ' + newDate.getHours() + ':' + newDate.getMinutes() + ':' + newDate.getSeconds();
+              this.books[k].date=newDate
+            }
           })
           .then(function(err) {
             console.log(err);
@@ -156,32 +156,6 @@
               break
             }
           }
-        },
-        addLock(){
-          let self = this
-          console.log(1)
-          for(var i =0 ;i<self.books.length;i++){
-            if(self.books[i].inventory<20){
-                let lockbook=self.books[i]
-                console.log(lockbook)
-                self.$http.post('/api/lockbooks/addLock',{
-                bookId:lockbook.bookId,
-                bookName:lockbook.bookName,
-                publisher:lockbook.publisher,
-                supplier:lockbook.supplier,
-                inventory:lockbook.inventory
-              })
-              .then(function(ret){
-                console.log(ret)
-                if(ret.data==-1){
-                  alert('请勿重复添加！')
-                }else{
-                  alert('添加成功')
-                }
-              })
-            }
-          }
-          location.href="/#/books/lockBooks"
         }
       }
     }

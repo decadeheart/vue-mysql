@@ -49,6 +49,7 @@ router.get('/bookList', (req, res) => {
 router.post('/updateBook', (req, res) => {
   var sql = $sql.book.updateBook;
   var params = req.body;
+  console.log('更新')
   console.log(params);
   conn.query(sql, [params.bookId,params.author, params.publisher,params.price, params.keyword,params.supplier, params.inventory, params.bookName], function(err, result) {
       if (err) {

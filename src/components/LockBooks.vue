@@ -18,7 +18,6 @@
               <th>供应商</th>
               <th>存货</th>
               <th>日期</th>
-              <th>操作</th>
             </tr>
           </thead>
           <tbody>
@@ -29,7 +28,41 @@
               <td>{{book.supplier}}</td>
               <td>{{book.inventory}}</td>
               <td>{{book.date}}</td>
-              <td><button class="btn btn-warning" data-toggle="modal" data-target="#updateModal" @click="chooseBook(book)">更新</button><button class="btn btn-danger" @click="deleteBook(book)">删除</button></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <div class="col-sm-12">
+      <div>
+        <i class="glyphicon glyphicon-list-alt"></i>
+        采购单
+        </div>
+      <hr>
+      <div>
+        <p v-if="!books.length"><strong>还没有任何书籍</strong></p>
+
+        <table class="table table-striped">
+          <thead>
+            <tr>
+              <th>书号</th>
+              <th>书名</th>
+              <th>出版社</th>
+              <th>供应商</th>
+              <th>存货</th>
+              <th>最少进货</th>
+              <th>操作</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr v-for="(book,index) in books">
+              <td>{{book.bookId}}</td>
+              <td>{{book.bookName}}</td>
+              <td>{{book.publisher}}</td>
+              <td>{{book.supplier}}</td>
+              <td>{{book.inventory}}</td>
+              <td>{{20-book.inventory}}</td>
+              <td><button class="btn btn-success" data-toggle="modal" data-target="#updateModal" @click="chooseBook(book)">进货</button></td>
             </tr>
           </tbody>
         </table>
@@ -43,39 +76,11 @@
               <span aria-hidden="true">&times;</span>
               <span class="sr-only">Close</span>
             </button>
-            <h4 class="modal-title" id="myModalLabel">修改信息</h4>
+            <h4 class="modal-title" id="myModalLabel">进货单</h4>
           </div>
           <div class="modal-body">
             <div class="form-group">
-              <label for="exampleInputEmail1">书号</label>
-              <input type="text" class="form-control"  placeholder="bookId" v-model="selectedBook.bookId">
-            </div>
-            <div class="form-group">
-              <label for="exampleInputEmail1">书名</label>
-              <input type="text" class="form-control"  placeholder="name" v-model="selectedBook.bookName">
-            </div>
-            <div class="form-group">
-              <label for="exampleInputPassword1">作者</label>
-              <input type="text" class="form-control"  placeholder="author" v-model="selectedBook.author">
-            </div>
-            <div class="form-group">
-              <label for="exampleInputPassword1">出版社</label>
-              <input type="text" class="form-control"  placeholder="publisher" v-model="selectedBook.publisher">
-            </div>
-            <div class="form-group">
-              <label for="exampleInputPassword1">价格</label>
-              <input type="text" class="form-control"  placeholder="price" v-model="selectedBook.price">
-            </div>
-            <div class="form-group">
-              <label for="exampleInputPassword1">关键</label>
-              <input type="text" class="form-control"  placeholder="keyword" v-model="selectedBook.keyword">
-            </div>
-            <div class="form-group">
-              <label for="exampleInputPassword1">供应商</label>
-              <input type="text" class="form-control"  placeholder="supplier" v-model="selectedBook.supplier">
-            </div>
-            <div class="form-group">
-              <label for="exampleInputPassword1">存货</label>
+              <label for="exampleInputPassword1">进货数量</label>
               <input type="text" class="form-control"  placeholder="inventory" v-model="selectedBook.inventory">
             </div>
           </div>

@@ -21,16 +21,27 @@ var jsonWrite = function(res, ret) {
 
 router.post('/addLock',(req,res)=>{
   var sql = $sql.lockbooks.addLock;
+  var sql_select = $sql.lockbooks.select_Lock
   var params=req.body;
   console.log(params)
-  conn.query(sql,[params.bookId,params.bookName,params.publisher,params.supplier,params.inventory],function(err,result){
+  conn.query(sql_select,params.bookName,function(err, result){
     if(err){
       console.log(err)
     }
-    if(result){
-      jsonWrite(res, result);
+    if(result[0]===undefined){
+      conn.query(sql,[params.bookId,params.bookName,params.publisher,params.supplier,params.inventory],function(err,result){
+        if(err){
+          console.log(err)
+        }
+        if(result){
+          jsonWrite(res, result);
+        }
+      })
+    }else{
+      res.send('-1')
     }
   })
+
 });
 
 //查询所有书籍列表

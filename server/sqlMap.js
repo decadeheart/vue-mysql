@@ -17,6 +17,7 @@ var sqlMap = {
   lockbooks:{
     addLock:'INSERT INTO lockbooks(bookId,bookName,publisher,supplier,inventory,date) values (?,?,?,?,?,NOW())',
     select_books:'select * from lockbooks',
+    select_Lock:'select * from lockbooks where bookName=?',
   }
 }
 

@@ -46,16 +46,11 @@ router.post('/selectUser', (req,res) => {
       if(result[0]===undefined) {
           res.send('-1')    //查询不出username，data返回-1
       }else {
-          conn.query(sql_password,params.password, function(err, result) {
-              if(err) {
-                  console.log(err)
-              }
-              if(result[0]===undefined) {
-                  res.send('0')    //username正确后，password错误，data返回 0
-              }else {
-                  jsonWrite(res, result);
-              }
-          })
+        if(params.password==result[0].password){
+          jsonWrite(res, result);
+        }else{
+          res.send('0')//username正确后，password错误，data返回 0
+        }
       }
   })
 });
