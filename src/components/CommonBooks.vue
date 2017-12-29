@@ -21,6 +21,7 @@
               <th>关键词</th>
               <th>供应商</th>
               <th>存货</th>
+              <th>链接</th>
               <th>操作</th>
             </tr>
           </thead>
@@ -34,6 +35,7 @@
               <td>{{book.keyword}}</td>
               <td>{{book.supplier}}</td>
               <td>{{book.inventory}}</td>
+              <td>{{book.url}}</td>
               <td><button class="btn btn-warning" data-toggle="modal" data-target="#updateModal" @click="chooseBook(book)">更新</button><button class="btn btn-danger" @click="deleteBook(book)">删除</button></td>
             </tr>
           </tbody>
@@ -83,6 +85,10 @@
               <label for="exampleInputPassword1">存货</label>
               <input type="text" class="form-control"  placeholder="inventory" v-model="selectedBook.inventory">
             </div>
+            <div class="form-group">
+              <label for="exampleInputPassword1">链接</label>
+              <input type="text" class="form-control"  placeholder="url" v-model="selectedBook.url">
+            </div>
           </div>
           <div class="modal-footer">
             <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
@@ -127,7 +133,8 @@
           inventory: this.selectedBook.inventory,
           publisher: this.selectedBook.publisher,
           supplier: this.selectedBook.supplier,
-          bookName: this.selectedBook.bookName
+          bookName: this.selectedBook.bookName,
+          url: this.selectedBook.url,
           },{})
           .then(function(ret) {
             console.log(ret.data)

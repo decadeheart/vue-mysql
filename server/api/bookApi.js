@@ -24,7 +24,7 @@ router.post('/addBook', (req, res) => {
     var sql = $sql.book.add;
     var params = req.body;
     console.log(params);
-    conn.query(sql, [params.bookId, params.bookName,params.author, params.publisher,params.price, params.keyword,params.supplier, params.inventory], function(err, result) {
+    conn.query(sql, [params.bookId, params.bookName,params.author, params.publisher,params.price, params.keyword,params.supplier, params.inventory, params.url], function(err, result) {
         if (err) {
             console.log(err);
         }
@@ -51,7 +51,7 @@ router.post('/updateBook', (req, res) => {
   var params = req.body;
   console.log('更新')
   console.log(params);
-  conn.query(sql, [params.bookId,params.author, params.publisher,params.price, params.keyword,params.supplier, params.inventory, params.bookName], function(err, result) {
+  conn.query(sql, [params.bookId,params.author, params.publisher,params.price, params.keyword,params.supplier, params.inventory,params.url, params.bookName], function(err, result) {
       if (err) {
           console.log(err);
       }

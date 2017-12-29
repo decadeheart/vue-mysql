@@ -6,14 +6,19 @@ import BookList from '@/components/BookList'
 import User from '@/components/User'
 import Control from '@/components/Control'
 import UserList from '@/components/UserList'
+import ShopBooks from '@/components/ShopBooks'
+import OrderList from '@/components/OrderList'
 
 Vue.use(Router)
-
 export default new Router({
   routes: [
     {
       path: '/',
       name: 'Home',
+      component: Home
+    },
+    {
+      path: '/home',
       component: Home
     },
     {
@@ -58,6 +63,14 @@ export default new Router({
     {
       path:'/userlist',
       component: UserList
+    },
+    {
+      path:'/shopbooks',
+      component: ShopBooks
+    },
+    {
+      path:'/orderlist',
+      component: OrderList
     }
   ]
 })

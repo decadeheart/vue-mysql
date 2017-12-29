@@ -3,6 +3,7 @@
 const userApi = require('./api/userApi');
 const bookApi = require('./api/bookApi');
 const lockApi = require('./api/lockApi');
+const orderApi = require('./api/orderApi');
 const fs = require('fs');
 const path = require('path');
 const bodyParser = require('body-parser');
@@ -16,6 +17,7 @@ app.use(bodyParser.urlencoded({extended: false}));
 app.use('/api/user', userApi);
 app.use('/api/book', bookApi);
 app.use('/api/lockbooks', lockApi);
+app.use('/api/order', orderApi);
 
 // 监听端口
 app.listen(3000);

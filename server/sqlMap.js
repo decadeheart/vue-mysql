@@ -12,9 +12,9 @@ var sqlMap = {
       select_users:'SELECT * from user',
   },
   book:{
-      add: 'insert into book(bookId, bookName, author,publisher,price,keyword,supplier,inventory) values (?, ?, ?, ?, ?, ?, ?, ?)',
+      add: 'insert into book(bookId, bookName, author,publisher,price,keyword,supplier,inventory,url) values (?, ?, ?, ?, ?, ?, ?, ?,?)',
       select_all: 'SELECT * from book',
-      updateBook:'update book set bookId=?,author=?,publisher=?,price=?,keyword=?,supplier=?,inventory=?  where bookName = ?',
+      updateBook:'update book set bookId=?,author=?,publisher=?,price=?,keyword=?,supplier=?,inventory=?,url=?  where bookName = ?',
       deleteBook: 'delete from book where bookName = ?',
       update_inventory:'update book set inventory=? where bookName=?',
     },
@@ -23,6 +23,12 @@ var sqlMap = {
     select_books:'select * from lockbooks',
     select_Lock:'select * from lockbooks where bookName=?',
     delete_lock:'delete from lockbooks where bookName= ?',
+  },
+  order:{
+    add_order: 'INSERT INTO orders(orderId,userId,bookName,orderNum,money,address,situation,date) values (?,?,?,?,?,?,?,NOW())',
+    select_orders: 'SELECT * from orders',
+    orderUpdate:'update orders set bookId=?,author=?,publisher=?,price=?,keyword=?,supplier=?,inventory=?,url=?  where bookName = ?',
+    deleteorder:'delete from orders where orderId= ?',
   }
 }
 

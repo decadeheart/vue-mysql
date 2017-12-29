@@ -79,6 +79,15 @@
               placeholder="inventory"
             />
           </div>
+          <div class="col-sm-12">
+            <label>链接</label>
+            <input
+              type="text"
+              class="form-control"
+              v-model="book.url"
+              placeholder="url"
+            />
+          </div>
         </div>
         <button class="btn btn-primary" @click="save()">录入</button>
         <router-link to="/" class="btn btn-danger">取消</router-link>
@@ -102,6 +111,7 @@
                 keyword : '',
                 supplier : '',
                 inventory : '',
+                url:'',
               }
             }
         },
@@ -116,6 +126,7 @@
               keyword : this.book.keyword,
               supplier : this.book.supplier,
               inventory : this.book.inventory,
+              url: this.book.url,
             }).then(function(ret){
               console.log(ret);
               let book = this.book

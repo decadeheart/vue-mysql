@@ -16,8 +16,7 @@
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
           <ul class="nav navbar-nav" >
             <li><router-link to="/home">首页</router-link></li>
-            <li><router-link to="/vedios">视频</router-link></li>
-            <li><router-link to="/books">书籍</router-link></li>
+            <li><router-link to="/shopbooks">书城</router-link></li>
             <li><router-link to="/control">控制台</router-link></li>
           </ul>
           <form class="navbar-form navbar-left">
@@ -118,6 +117,15 @@ export default {
       userId:'',
       password:'',
       showName:'',
+    }
+  },
+  mounted(){
+    let self = this
+    console.log(localStorage)
+    if(localStorage.name){
+      self.showName=localStorage.name
+    }else{
+      alert('需要登录')
     }
   },
   methods: {
