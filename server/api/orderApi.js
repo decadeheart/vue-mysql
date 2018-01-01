@@ -52,4 +52,18 @@ router.get('/orderList', (req, res) => {
       }
   })
 });
+//改变订单状态
+router.post('/changeStatus', (req, res) => {
+  var sql = $sql.order.changeStatus;
+  var params=req.body;
+  console.log(params)
+  conn.query(sql,params.orderId, function(err, result) {
+      if (err) {
+          console.log(err);
+      }
+      if (result) {
+          jsonWrite(res, result);
+      }
+  })
+});
 module.exports = router;

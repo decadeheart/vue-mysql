@@ -142,4 +142,39 @@ router.post('/deleteuser', (req, res) => {
       }
   })
 });
+router.post('/searchUser', (req, res) => {
+  var sql = $sql.user.searchById;
+  var sqlByName = $sql.user.searchByName;
+  var sqlByAddress = $sql.user.searchByAddress;
+  var params = req.body;
+  console.log(params);
+  conn.query(sql, params.factor, function(err, result) {
+      if (err) {
+          console.log(err);
+      }
+      if(result[0]===undefined){
+        conn.query(sqlByName, params.factor, function(err, result){
+            if (err) {
+              console.log(err);
+          }
+          if (result[0]===undefined) {
+            conn.query(sqlByAddress, params.factor, function(err, result){
+              if (err) {
+                console.log(err);
+              }
+              if(result[0]===undefined){
+                res.send('-1')
+              }else{
+                jsonWrite(res, result);
+              }
+          })
+          }else{
+            jsonWrite(res, result);
+          }
+        })
+      }else{
+        jsonWrite(res, result);
+      }
+  })
+});
 module.exports = router;

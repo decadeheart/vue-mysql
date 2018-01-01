@@ -10,6 +10,9 @@ var sqlMap = {
       Admin_Update:'update user set name=?,address=?,extral=?,level=?  where userId = ?',
       deleteUser: 'delete from user where userId = ?',
       select_users:'SELECT * from user',
+      searchById:"select * from user where userId like CONCAT('%',?,'%')",
+      searchByName:"select * from user where name like CONCAT('%',?,'%')",
+      searchByAddress:"select * from user where address like CONCAT('%',?,'%')",
   },
   book:{
       add: 'insert into book(bookId, bookName, author,publisher,price,keyword,supplier,inventory,url) values (?, ?, ?, ?, ?, ?, ?, ?,?)',
@@ -17,6 +20,8 @@ var sqlMap = {
       updateBook:'update book set bookId=?,author=?,publisher=?,price=?,keyword=?,supplier=?,inventory=?,url=?  where bookName = ?',
       deleteBook: 'delete from book where bookName = ?',
       update_inventory:'update book set inventory=? where bookName=?',
+      searchById:"select * from book where bookId like CONCAT('%',?,'%')" ,
+      searchByName:"select * from book where bookName like CONCAT('%',?,'%')",
     },
   lockbooks:{
     addLock:'INSERT INTO lockbooks(bookId,bookName,publisher,supplier,inventory,date) values (?,?,?,?,?,NOW())',
@@ -29,7 +34,12 @@ var sqlMap = {
     select_orders: 'SELECT * from orders',
     orderUpdate:'update orders set bookId=?,author=?,publisher=?,price=?,keyword=?,supplier=?,inventory=?,url=?  where bookName = ?',
     deleteorder:'delete from orders where orderId= ?',
-  }
+    changeStatus:'update orders set status=1 where orderId= ?'
+  },
+  publish:{
+    add_publish: 'insert into publisher(publisherName, publishMessage, publishBooks) values (?, ?, ?)',
+    select_publishers:'SELECT * from publisher',
+  },
 }
 
 module.exports = sqlMap;

@@ -8,6 +8,8 @@ import Control from '@/components/Control'
 import UserList from '@/components/UserList'
 import ShopBooks from '@/components/ShopBooks'
 import OrderList from '@/components/OrderList'
+import PublishList from '@/components/PublishList'
+import BookSearch from '@/components/BookSearch'
 
 Vue.use(Router)
 export default new Router({
@@ -55,6 +57,10 @@ export default new Router({
         component : resolve => require(['../components/BookAdmin.vue'],resolve),
       },
       {
+      path : 'publishAdmin',
+      component : resolve => require(['../components/PublishAdmin.vue'],resolve),
+      },
+      {
         path : '/',
         component : resolve => require(['../components/BookAdmin.vue'],resolve),
       },
@@ -69,8 +75,16 @@ export default new Router({
       component: ShopBooks
     },
     {
+      path:'/publisherlist',
+      component:PublishList
+    },
+    {
       path:'/orderlist',
       component: OrderList
+    },
+    {
+      path:'/booksearch',
+      component: BookSearch
     }
   ]
 })

@@ -19,6 +19,7 @@
               <th>金额</th>
               <th>收货地址</th>
               <th>备注</th>
+              <th>状态</th>
               <th>操作</th>
             </tr>
           </thead>
@@ -31,7 +32,13 @@
               <td>{{order.money}}</td>
               <td>{{order.address}}</td>
               <td>{{order.situation}}</td>
-              <td><button class="btn btn-warning" data-toggle="modal" data-target="#updateModal" @click="chooseOrder(order)">更新</button><button class="btn btn-danger" @click="deleteOrder(order)">删除</button></td>
+              <td v-if="!order.status">未完成</td>
+              <td v-if="order.status">已完成</td>
+              <td>
+                <button class="btn btn-warning" data-toggle="modal" data-target="#updateModal" @click="chooseOrder(order)">更新</button>
+                <button class="btn btn-danger" @click="deleteOrder(order)">删除</button>
+                <button class="btn btn-success" data-toggle="modal" data-target="#finishModal" @click="chooseOrder(order)" v-if="!order.status">完成订单</button>
+              </td>
             </tr>
           </tbody>
         </table>
@@ -84,6 +91,50 @@
         </div>
       </div>
     </div>
+    <!-- Modal -->
+    <div class="modal fade" id="finishModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+              <span class="sr-only">Close</span>
+            </button>
+            <h4 class="modal-title" id="myModalLabel">Modal title</h4>
+          </div>
+          <div class="modal-body">
+            <div class="col-sm-12">
+              <h5>订单:{{selectedOrder.orderId}}</h5>
+            </div>
+            <div class="col-sm-12">
+              <h5 class="list-group-item-text total-time">
+                <i class="glyphicon glyphicon-book"></i>
+                {{ selectedOrder.bookName }}
+              </h5>
+            </div>
+            <div class="col-sm-12">
+              <h5>数量:{{ selectedOrder.orderNum }}</h5>
+            </div>
+            <div class="col-sm-12">
+              <h5>金额:{{selectedOrder.money}}</h5>
+            </div>
+            <div class="col-sm-12">
+              <h5>等级:{{user.level}}</h5>
+            </div>
+            <div class="col-sm-12">
+              <h5>最终:{{finnalMoney}}</h5>
+            </div>
+          </div>
+          <div class="modal-body">
+            .
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            <button type="button" class="btn btn-primary" @click="finishOrder()">确定完成</button>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -94,10 +145,26 @@
         return {
           orders:[],
           selectedOrder:[],
+          user:[],
+          finnalMoney:'',
         }
       },
       created(){
         document.title="用户列表"
+        if(localStorage.name){
+          this.$http.post('/api/user/selectUserInfo',{
+            userId:localStorage.name
+          })
+          .then(function(ret){
+            this.user=ret.data[0]
+            console.log(ret.data)
+          })
+          .then(function(err){
+            console.log(err);
+          })
+        }else{
+          alert('需要登录!')
+        }
         this.$http.get('/api/order/orderList')
           .then(function(ret) {
             this.orders = ret.data;
@@ -110,6 +177,12 @@
       methods:{
         chooseOrder(order){
           this.selectedOrder = order
+          if(this.user.level==1){this.finnalMoney=parseFloat(this.selectedOrder.money)}
+          if(this.user.level==2){this.finnalMoney=parseFloat(this.selectedOrder.money)*0.9}
+          if(this.user.level==2||this.user.level==3){this.finnalMoney=parseFloat(this.selectedOrder.money)*0.85}
+          if(this.user.level==4){this.finnalMoney=parseFloat(this.selectedOrder.money)*0.8}
+          if(this.user.level==5){this.finnalMoney=parseFloat(this.selectedOrder.money)*0.75}
+          this.finnalMoney=this.finnalMoney.toFixed(2)
         },
         updateOrder(){
           $('#updateModal').modal('hide')
@@ -138,6 +211,27 @@
           })
           .then(function(err) {
             console.log(err);
+          })
+        },
+        finishOrder(){
+          this.user.extral=this.user.extral-this.finnalMoney
+          this.$http.post('/api/user/updateExtral',{
+            userId:localStorage.name,
+            extral:this.user.extral
+          })
+          .then(function(ret){
+            console.log(ret)
+          })
+          .then(function(err){
+            console.log(err)
+          })
+          this.$http.post('/api/order/changeStatus',{
+            orderId:this.selectedOrder.orderId
+          })
+          .then(function(ret){
+            console.log(ret)
+            this.selectedOrder.status=1
+            $('#finishModal').modal('hide')
           })
         },
         removeByValue(arr,val){

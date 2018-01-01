@@ -2,8 +2,15 @@
   <div class="container">
     <div class="col-sm-12">
       <div>
-        <i class="glyphicon glyphicon-list-alt"></i>
-        用户列表
+          <div class="form-group form-inline ">
+            <i class="glyphicon glyphicon-list-alt"></i>
+            用户列表
+              <div class="input-group">
+                <div class="input-group-addon">搜索</div>
+                <input type="text" class="form-control" id="exampleInputAmount" v-model="factor">
+              </div>
+            <button type="submit" class="btn btn-primary" @click="searchUser()">search</button>
+            </div>
         </div>
       <hr>
       <div>
@@ -22,6 +29,40 @@
           </thead>
           <tbody>
             <tr v-for="(user,index) in users">
+              <td>{{user.userId}}</td>
+              <td>{{user.name}}</td>
+              <td>{{user.address}}</td>
+              <td>{{user.extral}}</td>
+              <td>{{user.level}}</td>
+              <td><button class="btn btn-warning" data-toggle="modal" data-target="#updateModal" @click="chooseUser(user)">更新</button><button class="btn btn-danger" @click="deleteUser(user)">删除</button></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <div class="col-sm-12" v-if="searchUsers.length">
+      <div>
+        <i class="glyphicon glyphicon-list-alt"></i>
+          搜索结果
+        <span class="pull-right">关键字:{{factor}}</span>
+        </div>
+      <hr>
+      <div>
+        <p v-if="!users.length"><strong>还没有任何用户</strong></p>
+
+        <table class="table table-striped">
+          <thead>
+            <tr>
+              <th>Id</th>
+              <th>姓名</th>
+              <th>地址</th>
+              <th>余额</th>
+              <th>信用等级</th>
+              <th>操作</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr v-for="(user,index) in searchUsers">
               <td>{{user.userId}}</td>
               <td>{{user.name}}</td>
               <td>{{user.address}}</td>
@@ -78,6 +119,8 @@
         return {
           users:[],
           selectedUser:[],
+          searchUsers:[],
+          factor:'',
         }
       },
       created(){
@@ -92,6 +135,18 @@
           })
       },
       methods:{
+        searchUser(){
+          this.$http.post('/api/user/searchUser',{
+            factor:this.factor
+          })
+            .then(function(ret){
+              if(ret.data==-1){
+                alert('没有搜索到')
+              }else{
+                this.searchUsers=ret.data
+              }
+            })
+        },
         chooseUser(user){
           this.selectedUser = user
         },

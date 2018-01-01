@@ -19,12 +19,12 @@
             <li><router-link to="/shopbooks">书城</router-link></li>
             <li><router-link to="/control">控制台</router-link></li>
           </ul>
-          <form class="navbar-form navbar-left">
+          <div class="navbar-form navbar-left">
             <div class="form-group">
-              <input type="text" class="form-control" placeholder="Search">
+              <input type="text" class="form-control" placeholder="Search" v-model="bookFactor">
             </div>
-            <button type="submit" class="btn btn-default">搜索</button>
-          </form>
+            <button type="submit" class="btn btn-default" @click="toSearch()">搜索</button>
+          </div>
           <ul class="nav navbar-right navbar-nav">
             <li><a data-toggle="modal" href="#myModal" v-if="!showName">登录</a></li>
             <li><a data-toggle="modal" href="#registModal" v-if="!showName">注册</a></li>
@@ -117,6 +117,7 @@ export default {
       userId:'',
       password:'',
       showName:'',
+      bookFactor:'',
     }
   },
   mounted(){
@@ -138,6 +139,9 @@ export default {
         alert("注册成功!")
         $('#registModal').modal('hide')
       })
+    },
+    toSearch(){
+      location.href=`/#/booksearch?bookFactor=${this.bookFactor}`
     },
     login() {
       this.$http.post('/api/user/selectUser', {
