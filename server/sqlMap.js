@@ -22,6 +22,10 @@ var sqlMap = {
       update_inventory:'update book set inventory=? where bookName=?',
       searchById:"select * from book where bookId like CONCAT('%',?,'%')" ,
       searchByName:"select * from book where bookName like CONCAT('%',?,'%')",
+      searchByPublish:"select * from book where publisher like CONCAT('%',?,'%')",
+      searchByAuthor:"select * from book where author like CONCAT('%',?,'%')",
+      searchBykey:"select * from book where keyword like CONCAT('%',?,'%')",
+      searchByFactor:"select * from book where bookId like CONCAT('%',?,'%') or bookName like CONCAT('%',?,'%') or publisher like CONCAT('%',?,'%') or author like CONCAT('%',?,'%') or keyword like CONCAT('%',?,'%')"
     },
   lockbooks:{
     addLock:'INSERT INTO lockbooks(bookId,bookName,publisher,supplier,inventory,date) values (?,?,?,?,?,NOW())',

@@ -77,36 +77,18 @@ router.post('/deleteBook', (req, res) => {
 router.post('/bookSearch', (req, res) => {
   var sql = $sql.book.searchById;
   var sqlByName = $sql.book.searchByName;
-  var sqlByAddress = $sql.book.searchByAddress;
+  var sqlByAuthor = $sql.book.searchByAuthor;
+  var sqlByFactor = $sql.book.searchByFactor;
+
   var params = req.body;
   console.log(params);
-  conn.query(sql, params.factor, function(err, result) {
-      if (err) {
-          console.log(err);
-      }
-      if(result[0]===undefined){
-        conn.query(sqlByName, params.factor, function(err, result){
-            if (err) {
-              console.log(err);
-          }
-          if (result[0]===undefined) {
-            conn.query(sqlByAddress, params.factor, function(err, result){
-              if (err) {
-                console.log(err);
-              }
-              if(result[0]===undefined){
-                res.send('-1')
-              }else{
-                jsonWrite(res, result);
-              }
-          })
-          }else{
-            jsonWrite(res, result);
-          }
-        })
-      }else{
+  conn.query(sqlByFactor, [params.factor,params.factor,params.factor,params.factor,params.factor],function(err, result) {
+    if (err) {
+        console.log(err);
+    }
+    if (result) {
         jsonWrite(res, result);
-      }
-  })
+    }
+})
 });
 module.exports = router;
