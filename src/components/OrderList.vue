@@ -2,9 +2,17 @@
   <div class="container">
     <div class="col-sm-12">
       <div>
-        <i class="glyphicon glyphicon-list-alt"></i>
-        订单列表
+          <div class="form-group form-inline ">
+            <i class="glyphicon glyphicon-list-alt"></i>
+            订单列表
+              <div class="input-group">
+                <div class="input-group-addon">搜索</div>
+                <input type="text" class="form-control" id="exampleInputAmount" v-model="factor">
+              </div>
+            <button type="submit" class="btn btn-primary" @click="searchOrder()">search</button>
+            </div>
         </div>
+
       <hr>
       <div>
         <p v-if="!orders.length"><strong>订单</strong></p>
@@ -25,6 +33,51 @@
           </thead>
           <tbody>
             <tr v-for="(order,index) in orders">
+              <td>{{order.orderId}}</td>
+              <td>{{order.userId}}</td>
+              <td>{{order.bookName}}</td>
+              <td>{{order.orderNum}}</td>
+              <td>{{order.money}}</td>
+              <td>{{order.address}}</td>
+              <td>{{order.situation}}</td>
+              <td v-if="!order.status">未完成</td>
+              <td v-if="order.status">已完成</td>
+              <td>
+                <button class="btn btn-warning" data-toggle="modal" data-target="#updateModal" @click="chooseOrder(order)">更新</button>
+                <button class="btn btn-danger" @click="deleteOrder(order)">删除</button>
+                <button class="btn btn-success" data-toggle="modal" data-target="#finishModal" @click="chooseOrder(order)" v-if="!order.status">完成订单</button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <div class="col-sm-12" v-if="searchOrders.length">
+      <div>
+        <i class="glyphicon glyphicon-list-alt"></i>
+          搜索结果
+        <span class="pull-right">关键字:{{factor}}</span>
+        </div>
+      <hr>
+      <div>
+        <p v-if="!orders.length"><strong>订单</strong></p>
+
+        <table class="table table-striped">
+          <thead>
+            <tr>
+              <th>订单号</th>
+              <th>用户Id</th>
+              <th>书名</th>
+              <th>书籍数量</th>
+              <th>金额</th>
+              <th>收货地址</th>
+              <th>备注</th>
+              <th>状态</th>
+              <th>操作</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr v-for="(order,index) in searchOrders">
               <td>{{order.orderId}}</td>
               <td>{{order.userId}}</td>
               <td>{{order.bookName}}</td>
@@ -145,12 +198,14 @@
         return {
           orders:[],
           selectedOrder:[],
+          searchOrders:[],
           user:[],
           finnalMoney:'',
+          factor:'',
         }
       },
       created(){
-        document.title="用户列表"
+        document.title="订单列表"
         if(localStorage.name){
           this.$http.post('/api/user/selectUserInfo',{
             userId:localStorage.name
@@ -175,6 +230,18 @@
           })
       },
       methods:{
+        searchOrder(){
+          this.$http.post('/api/order/searchOrder',{
+            factor:this.factor
+          })
+            .then(function(ret){
+              if(ret.data==-1){
+                alert('没有搜索到')
+              }else{
+                this.searchOrders=ret.data
+              }
+            })
+        },
         chooseOrder(order){
           this.selectedOrder = order
           if(this.user.level==1){this.finnalMoney=parseFloat(this.selectedOrder.money)}

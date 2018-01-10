@@ -38,7 +38,8 @@ var sqlMap = {
     select_orders: 'SELECT * from orders',
     orderUpdate:'update orders set bookId=?,author=?,publisher=?,price=?,keyword=?,supplier=?,inventory=?,url=?  where bookName = ?',
     deleteorder:'delete from orders where orderId= ?',
-    changeStatus:'update orders set status=1 where orderId= ?'
+    changeStatus:'update orders set status=1 where orderId= ?',
+    searchByFactor:"select * from orders where orderId like CONCAT('%',?,'%') or userId like CONCAT('%',?,'%') or bookName like CONCAT('%',?,'%') or address like CONCAT('%',?,'%')"
   },
   publish:{
     add_publish: 'insert into publisher(publisherName, publishMessage, publishBooks) values (?, ?, ?)',

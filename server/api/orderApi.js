@@ -66,4 +66,19 @@ router.post('/changeStatus', (req, res) => {
       }
   })
 });
+//搜索订单
+router.post('/searchOrder', (req, res) => {
+  var sqlByFactor = $sql.order.searchByFactor;
+
+  var params = req.body;
+  console.log(params);
+  conn.query(sqlByFactor, [params.factor,params.factor,params.factor,params.factor],function(err, result) {
+    if (err) {
+        console.log(err);
+    }
+    if (result) {
+        jsonWrite(res, result);
+    }
+})
+});
 module.exports = router;

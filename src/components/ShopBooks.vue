@@ -108,9 +108,24 @@
           address:'',
           situation:'',
           userId:'',
+          user:[],
         }
       },
       created(){
+        if(localStorage.name){
+          this.$http.post('/api/user/selectUserInfo',{
+            userId:localStorage.name
+          })
+          .then(function(ret){
+            this.user=ret.data[0]
+            console.log(ret.data)
+          })
+          .then(function(err){
+            console.log(err);
+          })
+        }else{
+          alert('需要登录!')
+        }
       this.$http.get('/api/book/bookList')
         .then(function(ret) {
           this.books = ret.data;
@@ -123,6 +138,11 @@
       watch:{
         orderNum(curVal,oldVal){
           this.money=curVal*this.selectedBook.price
+          if(this.user.level==1){this.money=parseFloat(this.money)*0.9}
+          if(this.user.level==2||this.user.level==3){this.money=parseFloat(this.money)*0.85}
+          if(this.user.level==4){this.money=parseFloat(this.money)*0.8}
+          if(this.user.level==5){this.money=parseFloat(this.money)*0.75}
+          this.money=this.money.toFixed(2)
           if(curVal>this.selectedBook.inventory){
             alert('请不要超出库存！')
             curVal=0

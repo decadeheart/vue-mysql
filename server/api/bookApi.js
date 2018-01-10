@@ -75,9 +75,6 @@ router.post('/deleteBook', (req, res) => {
 });
 
 router.post('/bookSearch', (req, res) => {
-  var sql = $sql.book.searchById;
-  var sqlByName = $sql.book.searchByName;
-  var sqlByAuthor = $sql.book.searchByAuthor;
   var sqlByFactor = $sql.book.searchByFactor;
 
   var params = req.body;

@@ -48,7 +48,6 @@
         </div>
       <hr>
       <div>
-        <p v-if="!users.length"><strong>还没有任何用户</strong></p>
 
         <table class="table table-striped">
           <thead>

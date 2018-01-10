@@ -8,7 +8,7 @@
         </div>
       <hr>
       <div>
-        <p v-if="!books.length"><strong>还没有任何书籍</strong></p>
+        <p v-if="!books.length"><strong>没有搜到任何书籍，请切换关键词</strong></p>
         <div class="list-group">
           <a class="list-group-item" v-for="(book,index) in books" data-toggle="modal" href="#shopModal" @click="chooseBook(book)">
             <div class="row">
